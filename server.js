@@ -1,10 +1,11 @@
-import app from "./app";
+import app from "./app.js";
 import { configDotenv } from "dotenv";
 
-const port=process.env.PORT;
-const dotenv= configDotenv;
-dotenv.config();
+configDotenv();
+const port=process.env.PORT || 8080;
 
-app.listen(()=>{
-    console.log(`App funcionando desde el puerto:${port}`)
+
+
+app.listen(port,()=>{
+    console.log(`App funcionando desde: http://localhost:${port}`)
 })
