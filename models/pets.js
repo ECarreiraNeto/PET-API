@@ -4,8 +4,8 @@ const schema= new Schema({
     petName: {type:String,require:true},
     petOwner: {type:String,require:true},
     ownerDetails:{
-        phoneNumber: {type: Number, require: true},
-        email: {type: String, require:true},
+        phoneNumber: {type: Number, require: true, unique:true},
+        email: {type: String, unique:true},
         pendingPay: {type: Number, default: null}
     },
     petDetails: {

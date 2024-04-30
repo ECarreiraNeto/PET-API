@@ -3,7 +3,7 @@ import pet from "../models/pets.js";
 
 
 const apiController= {
-///Operaciones basicas CRUD///    
+///Querys basicas CRUD///    
     async getAll(req,res){
         try {
             const petList= await pet.find();
@@ -13,11 +13,19 @@ const apiController= {
             res.status(404).send("Error al obtener la informacion de la base de datos")
         }
     },
+    async getOne (req,res){
+        try {
+            const getOne= await pet.findById(req.params.id);
+            res.json(getOne);
+        } catch (err) {
+            res.status(404).send("Error al obtener la informacion de la base de datos")
+        }
+    },
     async insertOne (req,res){
         try {
             const newPet= new pet(req.body);
             await newPet.save();
-            res.status(200).json(newPet);
+            res.status(200).send("Mascota ingresada a la base de datos");
         } catch (err) {
             res.status(404).send("Error al obtener la informacion de la base de datos");
         }
@@ -26,7 +34,7 @@ const apiController= {
         try {
             await pet.findByIdAndUpdate(req.params.id,req.body);
             const editPet= await pet.findById(req.params.id);
-            res.status(201).json(editPet);
+            res.status(201).json(editPet).send("Registro editado con exito");
         } catch (err) {
             res.status(404).send("Error al obtener la informacion de la base de datos");
         }
@@ -39,10 +47,16 @@ const apiController= {
             res.status(404).send("Error al obtener la informacion de la base de datos");
         }
     },
-///consultas especificas:    
+///Querys especificas///:    
     async findByName(req,res){
         try {
-            const getPet= await pet.find({petName:req.params.petName});
+            const getPet= await pet.find(
+                {petName:req.params.petName},
+                {
+                    "petName":1,
+                    "petOwner":1,
+                    "ownerDetails":1
+                });
             res.json(getPet);
         } catch (err) {
             res.status(404).send("Error al obtener la informacion de la base de datos");
@@ -50,7 +64,14 @@ const apiController= {
     },
     async findByOwner(req,res){
         try {
-            const getPet= await pet.find({petOwner:req.params.petOwner});
+            const getPet= await pet.find(
+                {petOwner:req.params.petOwner},
+                {
+                    "ownerDetails":1,
+                    "petName":1
+                }
+            
+                );
             res.json(getPet);
         } catch (err) {
             res.status(404).send("Error al obtener la informacion de la base de datos");
@@ -77,9 +98,7 @@ const apiController= {
                 {
                     "petName":1,
                     "petOwner":1,
-                    "ownerDetails.pendingPay":1,
-                    "ownerDetails.email":1,
-                    "ownerDetails.phoneNumber":1
+                    "ownerDetails":1
                 });
             res.json(getPendingPay);
         } catch (err) {
