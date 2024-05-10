@@ -7,10 +7,17 @@ const apiController= {
     async getAll(req,res){
         try {
             const petList= await pet.find();
-            res.json(petList)
+            if(petList.length===0){
+                res.json({
+                    msg:"No hay mascotas registradas en la base de datos"
+                })
+            }else{
+                res.status(200).json(petList)
+            }
         } catch (err) {
-            console.log("Error al obtener la informacion de la base de datos");
-            res.status(404).send("Error al obtener la informacion de la base de datos")
+            res.status(404).json({
+                msg:"Error al conectarse a la base de datos"
+            })
         }
     },
     async getOne (req,res){
@@ -18,7 +25,9 @@ const apiController= {
             const getOne= await pet.findById(req.params.id);
             res.json(getOne);
         } catch (err) {
-            res.status(404).send("Error al obtener la informacion de la base de datos")
+            res.status(404).json({
+                msg:"Error al conectarse a la base de datos"
+            })
         }
     },
     async insertOne (req,res){
@@ -27,7 +36,9 @@ const apiController= {
             await newPet.save();
             res.status(200).send("Mascota ingresada a la base de datos");
         } catch (err) {
-            res.status(404).send("Error al obtener la informacion de la base de datos");
+            res.status(404).json({
+                msg:"Error al conectarse a la base de datos"
+            })
         }
     },
     async updateOne(req,res){
@@ -36,7 +47,9 @@ const apiController= {
             const editPet= await pet.findById(req.params.id);
             res.status(201).json(editPet).send("Registro editado con exito");
         } catch (err) {
-            res.status(404).send("Error al obtener la informacion de la base de datos");
+            res.status(404).json({
+                msg:"Error al conectarse a la base de datos"
+            })
         }
     },
     async deleteOne(req,res){
@@ -44,7 +57,9 @@ const apiController= {
             await pet.findByIdAndDelete(req.params.id);
             res.status(201).send("Mascota eliminada de la base de datos");
         } catch (err) {
-            res.status(404).send("Error al obtener la informacion de la base de datos");
+            res.status(404).json({
+                msg:"Error al conectarse a la base de datos"
+            })
         }
     },
 ///Querys especificas///:    
@@ -59,7 +74,9 @@ const apiController= {
                 });
             res.json(getPet);
         } catch (err) {
-            res.status(404).send("Error al obtener la informacion de la base de datos");
+            res.status(404).json({
+                msg:"Error al conectarse a la base de datos"
+            })
         }
     },
     async findByOwner(req,res){
@@ -74,7 +91,9 @@ const apiController= {
                 );
             res.json(getPet);
         } catch (err) {
-            res.status(404).send("Error al obtener la informacion de la base de datos");
+            res.status(404).json({
+                msg:"Error al conectarse a la base de datos"
+            })
         }
     },
     async findByState(req,res){
@@ -88,7 +107,9 @@ const apiController= {
                 });
             res.json(getState);
         } catch (err) {
-            res.status(404).send("Error al obtener la informacion de la base de datos");
+            res.status(404).json({
+                msg:"Error al conectarse a la base de datos"
+            })
         }
     },
     async findByPendingPay(req,res){
@@ -102,7 +123,9 @@ const apiController= {
                 });
             res.json(getPendingPay);
         } catch (err) {
-            res.status(404).send("Error al obtener la informacion de la base de datos").json(err)
+            res.status(404).json({
+                msg:"Error al conectarse a la base de datos"
+            })
         }
     }
 }

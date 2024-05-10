@@ -1,4 +1,4 @@
-import pet from "../models/pets.js";
+import pet from "../../models/pets.js";
 
 
 const validatePetName= async(req,res,next)=>{

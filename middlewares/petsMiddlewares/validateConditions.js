@@ -2,7 +2,7 @@ import { check, validationResult } from "express-validator";
 
 
 
-const checks= ()=>{
+const petChecks= ()=>{
     return [
         check('petName')
             .notEmpty().withMessage('Por favor ingrese el nombre de la mascota')
@@ -45,4 +45,4 @@ const checks= ()=>{
     ]
 } 
 
-export default checks;
+export default petChecks;
